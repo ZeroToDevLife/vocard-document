@@ -211,7 +211,7 @@ HTTP/1.1 500 Internal Server Error
 curl -v -X POST "http://127.0.0.1:4000/api/v1/auth/sign-up" \
  -d "email=qwer1234@gmail.com" \
  -d "password=qwer1234" \
- -d "nickname=asd" \
+ -d "nickname=asd"
 ```
 
 ##### Response
@@ -291,6 +291,11 @@ HTTP/1.1 500 Internal Server Error
 ###### Request Body
 
 ###### Example
+
+```bash
+curl -v -X POST "http://127.0.0.1:4000/api/v1/auth/send-email" \
+ -h "Authorization=Bearer XXXX"
+```
 
 ##### Response
 
@@ -382,7 +387,7 @@ HTTP/1.1 500 Internal Server Error
 
 ##### Request
 
-##### Header
+###### Header
 
 | name          |      description      | required |
 | ------------- | :-------------------: | :------: |
@@ -398,6 +403,7 @@ HTTP/1.1 500 Internal Server Error
 
 ```bash
 curl -v -X POST "http://127.0.0.1:4000/api/v1/auth/verify-email" \
+ -h "Authorization=Bearer XXXX"
  -d "code=123456"
 ```
 
@@ -575,19 +581,19 @@ Terms 모듈은 모두 인증 후 요청할 수 있는 모듈입니다.
 
 ###### Path Variable
 
-| name     |  type  |   description    | required |
-| -------- | :----: | :--------------: | :------: |
-| language | String |     언어코드     |    O     |
-| book     | String |   단어장 이름    |    O     |
-| level    | String | 단어장 레벨 정보 |    O     |
-| day      | String |     Day 정보     |    O     |
+| name     |  type   |   description    | required |
+| -------- | :-----: | :--------------: | :------: |
+| language | String  |     언어코드     |    O     |
+| book     | String  |   단어장 이름    |    O     |
+| level    | String  | 단어장 레벨 정보 |    O     |
+| day      | Integer |     Day 정보     |    O     |
 
 ###### Request Body
 
 ###### Example
 
 ```bash
-curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=800&day=1"
+curl -v -X GET "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=800&day=1"
 ```
 
 ##### Response
@@ -604,19 +610,17 @@ curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&leve
 
 ###### Example
 
-| name            |  type  | description | required |
-| --------------- | :----: | :---------: | :------: |
-| term_id         |  Int   |   단어 Id   |    O     |
-| word_code       | String |  단어 Code  |    O     |
-| word            | String |    단어     |    O     |
-| meaning         | String |   단어 뜻   |    O     |
-| day_id          | String |  속한 day   |    O     |
-| part_of_speech  | String |    품사     |    O     |
-| phonetic        | String |  발음기호   |    O     |
-| example         | String |    예문     |    O     |
-| example_meaning | String |   예문 뜻   |    O     |
-| synonym         | String |   유의어    |    O     |
-| antonym         | String |   반의어    |    O     |
+| name            |  type   | description | required |
+| --------------- | :-----: | :---------: | :------: |
+| term_id         | Integer |   단어 Id   |    O     |
+| word            | String  |    단어     |    O     |
+| meaning         | String  |   단어 뜻   |    O     |
+| part_of_speech  | String  |    품사     |    O     |
+| phonetic        | String  |  발음기호   |    O     |
+| example         | String  |    예문     |    O     |
+| example_meaning | String  |   예문 뜻   |    O     |
+| synonym         | String  |   유의어    |    O     |
+| antonym         | String  |   반의어    |    O     |
 
 **응답 성공**
 
@@ -625,7 +629,20 @@ HTTP/1.1 200 OK
 
 {
   "code": "SU",
-  "message": "Success."
+  "message": "Success.",
+  "terms": [
+    {
+      "term_id": 1234,
+      "word": "abandon",
+      "meaning": "버리다",
+      "part_of_speech": "verb",
+      "phonetic": "/əˈbændən/",
+      "example": "He abandoned his car in the snow.",
+      "example_meaning": "그는 눈 속에 차를 버렸다.",
+      "synonym": "leave",
+      "antonym": "keep"
+    }
+  ]
 }
 ```
 
@@ -689,7 +706,7 @@ HTTP/1.1 500 Internal Server Error
 ###### Example
 
 ```bash
-curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=800&day=1"
+curl -v -X GET "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=800&day=1"
 ```
 
 ##### Response
@@ -709,7 +726,6 @@ curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&leve
 | name            |  type  | description | required |
 | --------------- | :----: | :---------: | :------: |
 | term_id         |  Int   |   단어 Id   |    O     |
-| word_code       | String |  단어 Code  |    O     |
 | word            | String |    단어     |    O     |
 | meaning         | String |   단어 뜻   |    O     |
 | day_id          | String |  속한 day   |    O     |
@@ -724,7 +740,17 @@ HTTP/1.1 200 OK
 
 {
   "code": "SU",
-  "message": "Success."
+  "message": "Success.",
+  "terms": [
+    {
+      "term_id": 2231,
+      "word": "食べる",
+      "meaning": "먹다",
+      "yomigana": "たべる",
+      "example": "私は毎朝パンを食べます。",
+      "example_meaning": "나는 매일 아침 빵을 먹습니다."
+    }
+  ]
 }
 ```
 
@@ -788,7 +814,7 @@ HTTP/1.1 500 Internal Server Error
 ###### Example
 
 ```bash
-curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=800&day=1"
+curl -v -X GET "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=800&day=1"
 ```
 
 ##### Response
@@ -808,10 +834,8 @@ curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&leve
 | name        |  type  | description | required |
 | ----------- | :----: | :---------: | :------: |
 | term_id     |  Int   |   단어 Id   |    O     |
-| word_code   | String |  단어 Code  |    O     |
 | word        | String |    단어     |    O     |
 | meaning     | String |   단어 뜻   |    O     |
-| day_id      | String |  속한 day   |    O     |
 | shape       | String |   모양자    |    O     |
 | radical     | String |    부수     |    O     |
 | strokes     | String |    획수     |    O     |
@@ -825,7 +849,19 @@ HTTP/1.1 200 OK
 
 {
   "code": "SU",
-  "message": "Success."
+  "message": "Success.",
+    "terms": [
+    {
+      "term_id": 3121,
+      "word": "漢",
+      "meaning": "한나라 한",
+      "shape": "氵+又",
+      "radical": "氵",
+      "strokes": "13",
+      "on_reading": "カン",
+      "kun_reading": "あや"
+    }
+  ]
 }
 ```
 
@@ -889,7 +925,7 @@ HTTP/1.1 500 Internal Server Error
 ###### Example
 
 ```bash
-curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=800&day=1"
+curl -v -X GET "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=800&day=1"
 ```
 
 ##### Response
@@ -906,14 +942,12 @@ curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&leve
 
 ###### Example
 
-| name      |  type  | description | required |
-| --------- | :----: | :---------: | :------: |
-| term_id   |  Int   |   단어 Id   |    O     |
-| word_code | String |  단어 Code  |    O     |
-| word      | String |    단어     |    O     |
-| meaning   | String |   단어 뜻   |    O     |
-| day_id    | String |  속한 day   |    O     |
-| phonetic  | String |  발음기호   |    O     |
+| name     |  type  | description | required |
+| -------- | :----: | :---------: | :------: |
+| term_id  |  Int   |   단어 Id   |    O     |
+| word     | String |    단어     |    O     |
+| meaning  | String |   단어 뜻   |    O     |
+| phonetic | String |  발음기호   |    O     |
 
 **응답 성공**
 
@@ -922,7 +956,15 @@ HTTP/1.1 200 OK
 
 {
   "code": "SU",
-  "message": "Success."
+  "message": "Success.",
+  "terms": [
+    {
+      "term_id": 3011,
+      "word": "你好",
+      "meaning": "안녕하세요",
+      "phonetic": "nǐ hǎo"
+    }
+  ]
 }
 ```
 
@@ -980,16 +1022,14 @@ HTTP/1.1 500 Internal Server Error
 
 ###### Request Body
 
-| name  |  type  | description | required |
-| ----- | :----: | :---------: | :------: |
-| book  | String | 단어장 이름 |    O     |
-| level | String |  레벨 정보  |    X     |
-| day   | String |  Day 번호   |    O     |
+| name   |  type  | description | required |
+| ------ | :----: | :---------: | :------: |
+| day_id | String |  Day 번호   |    O     |
 
 ###### Example
 
 ```bash
-curl -v -X PATCH "http://127.0.0.1:4000/api/v1/terms/status" \
+curl -v -X POST "http://127.0.0.1:4000/api/v1/terms/status" \
  -h "Authorization=Bearer XXXX" \
  -d "book=Toefl" \
  -d "level=900" \
@@ -1054,3 +1094,85 @@ HTTP/1.1 500 Internal Server Error
 ```
 
 ---
+
+#### - 학습 기록 최근 10개 리스트 보기
+
+##### 설명
+
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 요청하고 조회가 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 서버 에러, 인증 실패, 데이터베이스 에러가 발생할 수 있습니다.
+
+- method : **GET**
+- URL : **/recently**
+
+##### Request
+
+###### Header
+
+| name          |      description      | required |
+| ------------- | :-------------------: | :------: |
+| Authorization | Bearer 토큰 인증 헤더 |    O     |
+
+###### Example
+
+```bash
+curl -v -X GET "http://127.0.0.1:4000/api/v1/terms/recently" \
+ -h "Authorization=Bearer XXXX"
+```
+
+##### Response
+
+###### Response Body
+
+| name             |        type         |        description         | required |
+| ---------------- | :-----------------: | :------------------------: | :------: |
+| code             |       String        |       응답 결과 코드       |    O     |
+| message          |       String        | 응답 결과 코드에 대한 설명 |    O     |
+| recently_studied | recently_studied [] | 최근 학습 기록 리스트 배열 |    O     |
+
+###### Recently Studied
+
+###### Example
+
+| name            |  type   |          description           | required |
+| --------------- | :-----: | :----------------------------: | :------: |
+| day_id          | Integer |         학습한 Day Id          |    O     |
+| last_studied_at | String  | 검사한 날짜 (yyyy-MM-dd hh:mm) |    O     |
+
+**응답 성공**
+
+```bash
+HTTP/1.1 200 OK
+
+{
+  "code": "SU",
+  "message": "Success.",
+  "recently_studied": [
+    {
+      "day_id": 123,
+      "last_studied_at": "2025-01-01 01:01"
+    },
+  ]
+}
+```
+
+**응답 : 실패 (인증 실패)**
+
+```bash
+HTTP/1.1 401 Unauthorized
+
+{
+  "code": "AF",
+  "message": "Auth fail."
+}
+```
+
+**응답 : 실패 (데이터베이스 에러)**
+
+```bash
+HTTP/1.1 500 Internal Server Error
+
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
