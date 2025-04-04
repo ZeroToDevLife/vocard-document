@@ -52,7 +52,7 @@ curl -v -X POST "http://localhost:4000/api/v1/auth/sign-in" \
 | message     | String  |    응답 결과 코드에 대한 설명    |    O     |
 | accessToken | String  |  Bearer 인증 방식에 사용될 JWT   |    O     |
 | expiration  | Integer | accessToken의 만료 기간 (초단위) |    O     |
-| is_verified | Boolean |         이메일 인증상태          |    O     |
+| isVerified  | Boolean |         이메일 인증상태          |    O     |
 
 ###### Example
 
@@ -66,7 +66,7 @@ HTTP/1.1 200 OK
   "message": "Success.",
   "accessToken": "${ACCESS_TOKEN}",
   "expiration": 32400,
-  "is_verified": false
+  "isVerified": false
 }
 ```
 
@@ -411,11 +411,11 @@ curl -v -X POST "http://127.0.0.1:4000/api/v1/auth/verify-email" \
 
 ###### Response Body
 
-| name        |  type   |        description         | required |
-| ----------- | :-----: | :------------------------: | :------: |
-| code        | String  |       응답 결과 코드       |    O     |
-| message     | String  | 응답 결과 코드에 대한 설명 |    O     |
-| is_verified | boolean |      이메일 인증 여부      |    O     |
+| name       |  type   |        description         | required |
+| ---------- | :-----: | :------------------------: | :------: |
+| code       | String  |       응답 결과 코드       |    O     |
+| message    | String  | 응답 결과 코드에 대한 설명 |    O     |
+| isVerified | boolean |      이메일 인증 여부      |    O     |
 
 ###### Example
 
@@ -427,7 +427,7 @@ HTTP/1.1 200 OK
 {
   "code": "SU",
   "message": "Success."
-  "is_verified": true
+  "isVerified": true
 }
 ```
 
@@ -610,17 +610,17 @@ curl -v -X GET "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=
 
 ###### Example
 
-| name            |  type   | description | required |
-| --------------- | :-----: | :---------: | :------: |
-| term_id         | Integer |   단어 Id   |    O     |
-| word            | String  |    단어     |    O     |
-| meaning         | String  |   단어 뜻   |    O     |
-| part_of_speech  | String  |    품사     |    O     |
-| phonetic        | String  |  발음기호   |    O     |
-| example         | String  |    예문     |    O     |
-| example_meaning | String  |   예문 뜻   |    O     |
-| synonym         | String  |   유의어    |    O     |
-| antonym         | String  |   반의어    |    O     |
+| name           |  type   | description | required |
+| -------------- | :-----: | :---------: | :------: |
+| termId         | Integer |   단어 Id   |    O     |
+| word           | String  |    단어     |    O     |
+| meaning        | String  |   단어 뜻   |    O     |
+| partOfSpeech   | String  |    품사     |    O     |
+| phonetic       | String  |  발음기호   |    O     |
+| example        | String  |    예문     |    O     |
+| exampleMeaning | String  |   예문 뜻   |    O     |
+| synonym        | String  |   유의어    |    O     |
+| antonym        | String  |   반의어    |    O     |
 
 **응답 성공**
 
@@ -632,13 +632,13 @@ HTTP/1.1 200 OK
   "message": "Success.",
   "terms": [
     {
-      "term_id": 1234,
+      "termId": 1234,
       "word": "abandon",
       "meaning": "버리다",
-      "part_of_speech": "verb",
+      "partOfSpeech": "verb",
       "phonetic": "/əˈbændən/",
       "example": "He abandoned his car in the snow.",
-      "example_meaning": "그는 눈 속에 차를 버렸다.",
+      "exampleMeaning": "그는 눈 속에 차를 버렸다.",
       "synonym": "leave",
       "antonym": "keep"
     }
@@ -723,15 +723,15 @@ curl -v -X GET "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=
 
 ###### Example
 
-| name            |  type  | description | required |
-| --------------- | :----: | :---------: | :------: |
-| term_id         |  Int   |   단어 Id   |    O     |
-| word            | String |    단어     |    O     |
-| meaning         | String |   단어 뜻   |    O     |
-| day_id          | String |  속한 day   |    O     |
-| yomigana        | String |  요미가나   |    O     |
-| example         | String |    예문     |    O     |
-| example_meaning | String |   예문 뜻   |    O     |
+| name           |  type  | description | required |
+| -------------- | :----: | :---------: | :------: |
+| termId         |  Int   |   단어 Id   |    O     |
+| word           | String |    단어     |    O     |
+| meaning        | String |   단어 뜻   |    O     |
+| dayId          | String |  속한 day   |    O     |
+| yomigana       | String |  요미가나   |    O     |
+| example        | String |    예문     |    O     |
+| exampleMeaning | String |   예문 뜻   |    O     |
 
 **응답 성공**
 
@@ -743,12 +743,12 @@ HTTP/1.1 200 OK
   "message": "Success.",
   "terms": [
     {
-      "term_id": 2231,
+      "termId": 2231,
       "word": "食べる",
       "meaning": "먹다",
       "yomigana": "たべる",
       "example": "私は毎朝パンを食べます。",
-      "example_meaning": "나는 매일 아침 빵을 먹습니다."
+      "exampleMeaning": "나는 매일 아침 빵을 먹습니다."
     }
   ]
 }
@@ -831,16 +831,16 @@ curl -v -X GET "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=
 
 ###### Example
 
-| name        |  type  | description | required |
-| ----------- | :----: | :---------: | :------: |
-| term_id     |  Int   |   단어 Id   |    O     |
-| word        | String |    단어     |    O     |
-| meaning     | String |   단어 뜻   |    O     |
-| shape       | String |   모양자    |    O     |
-| radical     | String |    부수     |    O     |
-| strokes     | String |    획수     |    O     |
-| on_reading  | String |    음독     |    O     |
-| kun_reading | String |    훈독     |    O     |
+| name       |  type  | description | required |
+| ---------- | :----: | :---------: | :------: |
+| termId     |  Int   |   단어 Id   |    O     |
+| word       | String |    단어     |    O     |
+| meaning    | String |   단어 뜻   |    O     |
+| shape      | String |   모양자    |    O     |
+| radical    | String |    부수     |    O     |
+| strokes    | String |    획수     |    O     |
+| onReading  | String |    음독     |    O     |
+| kunReading | String |    훈독     |    O     |
 
 **응답 성공**
 
@@ -852,14 +852,14 @@ HTTP/1.1 200 OK
   "message": "Success.",
     "terms": [
     {
-      "term_id": 3121,
+      "termId": 3121,
       "word": "漢",
       "meaning": "한나라 한",
       "shape": "氵+又",
       "radical": "氵",
       "strokes": "13",
-      "on_reading": "カン",
-      "kun_reading": "あや"
+      "onReading": "カン",
+      "kunReading": "あや"
     }
   ]
 }
@@ -944,7 +944,7 @@ curl -v -X GET "http://127.0.0.1:4000/api/v1/terms?language=en&book=toeic&level=
 
 | name     |  type  | description | required |
 | -------- | :----: | :---------: | :------: |
-| term_id  |  Int   |   단어 Id   |    O     |
+| termId   |  Int   |   단어 Id   |    O     |
 | word     | String |    단어     |    O     |
 | meaning  | String |   단어 뜻   |    O     |
 | phonetic | String |  발음기호   |    O     |
@@ -959,7 +959,7 @@ HTTP/1.1 200 OK
   "message": "Success.",
   "terms": [
     {
-      "term_id": 3011,
+      "termId": 3011,
       "word": "你好",
       "meaning": "안녕하세요",
       "phonetic": "nǐ hǎo"
@@ -1022,9 +1022,9 @@ HTTP/1.1 500 Internal Server Error
 
 ###### Request Body
 
-| name   |  type  | description | required |
-| ------ | :----: | :---------: | :------: |
-| day_id | String |  Day 번호   |    O     |
+| name  |  type  | description | required |
+| ----- | :----: | :---------: | :------: |
+| dayId | String |  Day 번호   |    O     |
 
 ###### Example
 
@@ -1040,11 +1040,11 @@ curl -v -X POST "http://127.0.0.1:4000/api/v1/terms/status" \
 
 ###### Response Body
 
-| name         |  type  |        description         | required |
-| ------------ | :----: | :------------------------: | :------: |
-| code         | String |       응답 결과 코드       |    O     |
-| message      | String | 응답 결과 코드에 대한 설명 |    O     |
-| review_count |  int   |         회독 횟수          |    O     |
+| name        |  type  |        description         | required |
+| ----------- | :----: | :------------------------: | :------: |
+| code        | String |       응답 결과 코드       |    O     |
+| message     | String | 응답 결과 코드에 대한 설명 |    O     |
+| reviewCount |  int   |         회독 횟수          |    O     |
 
 ###### Example
 
@@ -1056,7 +1056,7 @@ HTTP/1.1 200 OK
 {
   "code": "SU",
   "message": "Success.",
-  "review_count": 3
+  "reviewCount": 3
 }
 ```
 
@@ -1123,20 +1123,20 @@ curl -v -X GET "http://127.0.0.1:4000/api/v1/terms/recently" \
 
 ###### Response Body
 
-| name             |        type         |        description         | required |
-| ---------------- | :-----------------: | :------------------------: | :------: |
-| code             |       String        |       응답 결과 코드       |    O     |
-| message          |       String        | 응답 결과 코드에 대한 설명 |    O     |
-| recently_studied | recently_studied [] | 최근 학습 기록 리스트 배열 |    O     |
+| name            |        type         |        description         | required |
+| --------------- | :-----------------: | :------------------------: | :------: |
+| code            |       String        |       응답 결과 코드       |    O     |
+| message         |       String        | 응답 결과 코드에 대한 설명 |    O     |
+| recentlyStudied | recently_studied [] | 최근 학습 기록 리스트 배열 |    O     |
 
 ###### Recently Studied
 
 ###### Example
 
-| name            |  type   |          description           | required |
-| --------------- | :-----: | :----------------------------: | :------: |
-| day_id          | Integer |         학습한 Day Id          |    O     |
-| last_studied_at | String  | 검사한 날짜 (yyyy-MM-dd hh:mm) |    O     |
+| name          |  type   |          description           | required |
+| ------------- | :-----: | :----------------------------: | :------: |
+| dayId         | Integer |         학습한 Day Id          |    O     |
+| lastStudiedAt | String  | 검사한 날짜 (yyyy-MM-dd hh:mm) |    O     |
 
 **응답 성공**
 
@@ -1146,10 +1146,10 @@ HTTP/1.1 200 OK
 {
   "code": "SU",
   "message": "Success.",
-  "recently_studied": [
+  "recentlyStudied": [
     {
-      "day_id": 123,
-      "last_studied_at": "2025-01-01 01:01"
+      "dayId": 123,
+      "lastStudiedAt": "2025-01-01 01:01"
     },
   ]
 }
@@ -1176,3 +1176,352 @@ HTTP/1.1 500 Internal Server Error
   "message": "Database Error."
 }
 ```
+
+---
+
+<h2 style='background-color: rgba(55, 55, 55, 0.2); text-align: center'>User 모듈</h2>
+
+Vocard 서비스의 사용자 정보와 관련된 REST API 모듈입니다.  
+로그인 사용자 정보 확인, 비밀번호 재설정 등의 API가 포함되어 있습니다.  
+User 모듈은 모두 인증 후 요청할 수 있는 모듈입니다.
+
+- url : /api/v1/user
+
+---
+
+#### - 로그인 사용자 정보 확인
+
+##### 설명
+
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 요청하고 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 데이터베이스 에러가 발생할 수 있습니다.
+
+- method : **GET**
+- URL : **/me**
+
+##### Request
+
+###### Header
+
+| name          |      description      | required |
+| ------------- | :-------------------: | :------: |
+| Authorization | Bearer 토큰 인증 헤더 |    O     |
+
+###### Example
+
+```bash
+curl -X GET "http://127.0.0.1:4000/api/v1/user/me" \
+ -h "Authorization=Bearer XXXX"
+```
+
+##### Response
+
+###### Response Body
+
+| name     |  type  |        description         | required |
+| -------- | :----: | :------------------------: | :------: |
+| code     | String |       응답 결과 코드       |    O     |
+| message  | String | 응답 결과 코드에 대한 설명 |    O     |
+| email    | String |       사용자 이메일        |    O     |
+| nickname | String |        사용자 이름         |    O     |
+
+###### Example
+
+**응답 성공**
+
+```bash
+HTTP/1.1 200 OK
+
+{
+  "code": "SU",
+  "message": "Success.",
+  "email": "qwer1234@gmail.com",
+  "nickname": "user1"
+}
+```
+
+**응답 : 실패 (인증 실패)**
+
+```bash
+HTTP/1.1 401 Unauthorized
+
+{
+  "code": "AF",
+  "message": "Auth fail."
+}
+```
+
+**응답 : 실패 (데이터베이스 에러)**
+
+```bash
+HTTP/1.1 500 Internal Server Error
+
+{
+  "code": "DBE",
+  "message": "Database error."
+}
+```
+
+---
+
+#### - 사용자 닉네임 수정
+
+##### 설명
+
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 사용자 이름을 입력하여 요청하고 회원가입이 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 데이터베이스 에러가 발생할 수 있습니다.
+
+- method : **PATCH**
+- URL : **/nickname**
+
+##### Request
+
+###### Header
+
+| name          |      description      | required |
+| ------------- | :-------------------: | :------: |
+| Authorization | Bearer 토큰 인증 헤더 |    O     |
+
+###### Request Body
+
+| name     |  type  | description | required |
+| -------- | :----: | :---------: | :------: |
+| nickname | String | 사용자 이름 |    O     |
+
+###### Example
+
+```bash
+curl -v -X PATCH "http://127.0.0.1:4000/api/v1/user/nickname" \
+ -h "Authorization=Bearer XXXX" \
+ -d "nickname=user1"
+```
+
+##### Response
+
+###### Response Body
+
+| name    |  type  |        description         | required |
+| ------- | :----: | :------------------------: | :------: |
+| code    | String |       응답 결과 코드       |    O     |
+| message | String | 응답 결과 코드에 대한 설명 |    O     |
+
+###### Example
+
+**응답 성공**
+
+```bash
+HTTP/1.1 200 OK
+
+{
+  "code": "SU",
+  "message": "Success."
+}
+```
+
+**응답 : 실패 (데이터 유효성 검사 실패)**
+
+```bash
+HTTP/1.1 400 Bad Request
+
+{
+  "code": "VF",
+  "message": "Validation Fail."
+}
+```
+
+**응답 : 실패 (인증 실패)**
+
+```bash
+HTTP/1.1 401 Unauthorized
+
+{
+  "code": "AF",
+  "message": "Auth fail."
+}
+```
+
+**응답 : 실패 (데이터베이스 에러)**
+
+```bash
+HTTP/1.1 500 Internal Server Error
+
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
+
+---
+
+#### - 사용자 비밀번호 수정
+
+##### 설명
+
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 사용자 이름을 입력하여 요청하고 회원가입이 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 데이터베이스 에러가 발생할 수 있습니다.
+
+- method : **PATCH**
+- URL : **/**
+
+##### Request
+
+###### Header
+
+| name          |      description      | required |
+| ------------- | :-------------------: | :------: |
+| Authorization | Bearer 토큰 인증 헤더 |    O     |
+
+###### Request Body
+
+| name            |  type  |  description  | required |
+| --------------- | :----: | :-----------: | :------: |
+| currentPassword | String | 기존 비밀번호 |    O     |
+| newPassword     | String | 신규 비밀번호 |    O     |
+
+###### Example
+
+```bash
+curl -v -X PATCH "http://127.0.0.1:4000/api/v1/user/password" \
+ -h "Authorization=Bearer XXXX" \
+ -d "currentPassword=old123" \
+ -d "newPassword=new123"
+```
+
+##### Response
+
+###### Response Body
+
+| name    |  type  |        description         | required |
+| ------- | :----: | :------------------------: | :------: |
+| code    | String |       응답 결과 코드       |    O     |
+| message | String | 응답 결과 코드에 대한 설명 |    O     |
+
+###### Example
+
+**응답 성공**
+
+```bash
+HTTP/1.1 200 OK
+
+{
+  "code": "SU",
+  "message": "Success."
+}
+```
+
+**응답 : 실패 (데이터 유효성 검사 실패)**
+
+```bash
+HTTP/1.1 400 Bad Request
+
+{
+  "code": "VF",
+  "message": "Validation Fail."
+}
+```
+
+**응답 : 실패 (인증 실패)**
+
+```bash
+HTTP/1.1 401 Unauthorized
+
+{
+  "code": "AF",
+  "message": "Auth fail."
+}
+```
+
+**응답 : 실패 (데이터베이스 에러)**
+
+```bash
+HTTP/1.1 500 Internal Server Error
+
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
+
+---
+
+---
+
+#### - 회원 탈퇴
+
+##### 설명
+
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 사용자 이름을 입력하여 요청하고 회원가입이 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 데이터베이스 에러가 발생할 수 있습니다.
+
+- method : **DELET**
+- URL : **/**
+
+##### Request
+
+###### Header
+
+| name          |      description      | required |
+| ------------- | :-------------------: | :------: |
+| Authorization | Bearer 토큰 인증 헤더 |    O     |
+
+###### Request Body
+
+###### Example
+
+```bash
+curl -v -X DELETE "http://127.0.0.1:4000/api/v1/user" \
+ -h "Authorization=Bearer XXXX"
+```
+
+##### Response
+
+###### Response Body
+
+| name    |  type  |        description         | required |
+| ------- | :----: | :------------------------: | :------: |
+| code    | String |       응답 결과 코드       |    O     |
+| message | String | 응답 결과 코드에 대한 설명 |    O     |
+
+###### Example
+
+**응답 성공**
+
+```bash
+HTTP/1.1 200 OK
+
+{
+  "code": "SU",
+  "message": "Success."
+}
+```
+
+**응답 : 실패 (데이터 유효성 검사 실패)**
+
+```bash
+HTTP/1.1 400 Bad Request
+
+{
+  "code": "VF",
+  "message": "Validation Fail."
+}
+```
+
+**응답 : 실패 (인증 실패)**
+
+```bash
+HTTP/1.1 401 Unauthorized
+
+{
+  "code": "AF",
+  "message": "Auth fail."
+}
+```
+
+**응답 : 실패 (데이터베이스 에러)**
+
+```bash
+HTTP/1.1 500 Internal Server Error
+
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
+
+---
